@@ -1,26 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  loadFromLocalStorage,
-  saveToLocalStorage,
-} from "../../utils/manageLocalStorage";
-import { UNSAVED_FILE } from "../../utils/dataKeys";
+import { loadFromLocalStorage } from "../../utils/manageLocalStorage";
+import { CREDENTIALS } from "../../utils/dataKeys";
 
-const localData = loadFromLocalStorage(UNSAVED_FILE) || {};
+const localData = loadFromLocalStorage(CREDENTIALS) || {};
 
 const initialState = {
-  unsaved_file: localData || null,
+  curr_view: localData?.token ? "list" : "fu",
+  curr_data: {},
 };
 
 const homeSlice = createSlice({
   name: "home",
   initialState,
   reducers: {
-    saveAsUnsavedFile: (state, action) => {
-      state.unsaved_file = action.payload;
-      saveToLocalStorage(UNSAVED_FILE, action.payload);
+    setCurrView: (state, action) => {
+      state.curr_view = action.payload;
+    },
+    setCurrData: (state, action) => {
+      state.curr_data = action.payload;
     },
   },
 });
 
-export const { saveAsUnsavedFile } = homeSlice.actions;
+export const { setCurrView, setCurrData } = homeSlice.actions;
 export default homeSlice.reducer;

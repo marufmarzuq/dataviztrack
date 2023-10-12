@@ -1,29 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useDispatch, useSelector } from "react-redux";
-import { saveAsUnsavedFile } from "../../lib/slices/homeSlice";
+import { useDispatch } from "react-redux";
+import { setCurrData, setCurrView } from "../../lib/slices/homeSlice";
+import Papa from "papaparse";
+import ReactLoading from "react-loading";
 
-const UploadFile = () => {
-  const dispath = useDispatch();
-  const fileName = useSelector((state) => state?.home?.unsaved_file);
+const UploadFile = ({ setUnsavedFile }) => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: {
       "text/csv": [],
     },
   });
 
-  console.log(fileName);
-
   useEffect(() => {
     if (acceptedFiles?.length) {
+      setLoading(true);
       const file = acceptedFiles[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-          dispath(saveAsUnsavedFile(event.target.result));
-        };
-        reader.readAsDataURL(file);
-      }
+      Papa.parse(file, {
+        header: true,
+        complete: (results) => {
+          const data = results?.data;
+          data?.pop();
+          setUnsavedFile(file);
+          dispatch(setCurrData(data));
+          setLoading(false);
+          dispatch(setCurrView("table"));
+        },
+      });
     }
   }, [acceptedFiles]);
 
@@ -45,17 +50,37 @@ const UploadFile = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          cursor: "pointer",
+          cursor: loading ? "auto" : "pointer",
         }}
         {...getRootProps({ className: "dropzone" })}
       >
         <input {...getInputProps()} />
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "18px", marginBottom: "-5px" }}>
-            Drag and Drop, <b>browse from your device</b>
-          </p>
-          <p>(You can select only CSV file)</p>
-        </div>
+        {loading ? (
+          <div
+            style={{
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "-30px",
+            }}
+          >
+            <p style={{ fontSize: "24px" }}>Parsing CSV</p>
+            <ReactLoading
+              type="spin"
+              color="#333"
+              height={"80px"}
+              width={"80px"}
+            />
+          </div>
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            <p style={{ fontSize: "18px", marginBottom: "-5px" }}>
+              Drag and Drop, <b>browse from your device</b>
+            </p>
+            <p>(You can select only CSV file)</p>
+          </div>
+        )}
       </div>
     </div>
   );
