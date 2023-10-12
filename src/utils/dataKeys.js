@@ -1,2 +1,2 @@
-export const BASE = "BASE";
 export const CREDENTIALS = "CREDENTIALS";
+export const UNSAVED_FILE = "UNSAVED_FILE";
