@@ -5,26 +5,28 @@ import {
 } from "../../utils/manageLocalStorage";
 import { CREDENTIALS } from "../../utils/dataKeys";
 
-const localData = loadFromLocalStorage(CREDENTIALS);
+const localData = loadFromLocalStorage(CREDENTIALS) || {};
 
 const initialState = {
-  user_details: localData || null,
+  token: localData?.token || null,
+  username: localData?.username || null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    saveUser: (state, action) => {
-      state.user_details = action.payload;
+    saveCredentials: (state, action) => {
+      state.token = action.payload.token;
+      state.username = action.payload.username;
       saveToLocalStorage(CREDENTIALS, action.payload);
     },
     logout: (state) => {
-      state.user_details = null;
-      saveToLocalStorage(CREDENTIALS, null);
+      state.token = null;
+      saveToLocalStorage(CREDENTIALS, {});
     },
   },
 });
 
-export const { saveUser, logout } = authSlice.actions;
+export const { saveCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;

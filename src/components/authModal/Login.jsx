@@ -1,16 +1,23 @@
 import { useState } from "react";
-import { RiKey2Line } from "react-icons/ri";
-import { MdOutlineMail } from "react-icons/md";
+import { RiKey2Line, RiUser6Line } from "react-icons/ri";
+import LoadingBtn from "../ui/LoadingBtn";
 
-const Login = () => {
+const Login = ({ formValues, handleChangeValue, loading }) => {
   const [passShow, setPassShow] = useState(false);
+
   return (
     <div className="auth-modal-form-container">
       <div className="single-auth-input-box">
         <div className="saib-icon">
-          <MdOutlineMail />
+          <RiUser6Line />
         </div>
-        <input type="text" name="email" placeholder="Email" required />
+        <input
+          value={formValues?.username}
+          onChange={handleChangeValue}
+          name="username"
+          placeholder="Username"
+          required
+        />
       </div>
       <div className="single-auth-input-box sai-pass-box">
         <div className="saib-icon">
@@ -18,6 +25,8 @@ const Login = () => {
         </div>
         <input
           type={passShow ? "text" : "password"}
+          value={formValues?.password}
+          onChange={handleChangeValue}
           name="password"
           placeholder="Password"
           required
@@ -27,9 +36,13 @@ const Login = () => {
         </div>
       </div>
       <div className="forgot-pass-link">Forgot your password?</div>
-      <button className="auth-from-submit-btn" type="submit">
-        Login
-      </button>
+      {loading ? (
+        <LoadingBtn height={"50px"} />
+      ) : (
+        <button className="auth-from-submit-btn" type="submit">
+          Login
+        </button>
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
-import UNIVERSAL from "config";
-import { CREDENTIALS } from "utils/dataKeys";
-import { loadFromLocalStorage } from "utils/manageLocalStorage";
+import { CREDENTIALS } from "../../utils/dataKeys";
+import { loadFromLocalStorage } from "../../utils/manageLocalStorage";
+import UNIVERSAL from "../../config";
 
 const Axios = axios.create({
   baseURL: UNIVERSAL.BASEURL,
@@ -11,7 +11,9 @@ Axios.interceptors.request.use((config) => {
   config = {
     ...config,
     headers: {
-      Authorization: `Bearer ${loadFromLocalStorage(CREDENTIALS)?.token}`,
+      Authorization: loadFromLocalStorage(CREDENTIALS)?.token
+        ? `Bearer ${loadFromLocalStorage(CREDENTIALS)?.token}`
+        : "",
     },
     metadata: { startTime: new Date() },
   };

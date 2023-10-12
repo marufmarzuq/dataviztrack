@@ -2,6 +2,7 @@ import store from "../lib/store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AppProviders({ children }) {
   return (
@@ -10,16 +11,15 @@ function AppProviders({ children }) {
         {children}
         <ToastContainer
           position="bottom-left"
-          autoClose={3000}
+          autoClose={2500}
           limit={3}
           hideProgressBar
           newestOnTop
           closeOnClick
-          rtl={false}
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="colored"
+          // theme="colored"
         />
       </BrowserRouter>
     </Provider>

@@ -1,17 +1,13 @@
-import img from "./assets/react.svg";
+import AuthModal from "./components/authModal/AuthModal";
+import Header from "./components/header/Header";
+import Router from "./router";
+
 const App = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        flexDirection: "column",
-      }}
-    >
-      <img src={img} alt="" />
-      <p>App Cleaned</p>
+    <div>
+      <AuthModal />
+      <Header />
+      <Router />
     </div>
   );
 };
