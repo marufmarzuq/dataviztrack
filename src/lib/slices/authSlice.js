@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CREDENTIALS } from "utils/dataKeys";
 import {
   loadFromLocalStorage,
   saveToLocalStorage,
-} from "utils/manageLocalStorage";
+} from "../../utils/manageLocalStorage";
+import { CREDENTIALS } from "../../utils/dataKeys";
 
 const localData = loadFromLocalStorage(CREDENTIALS);
 
