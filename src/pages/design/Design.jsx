@@ -1,11 +1,24 @@
 import "./design.css";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import review1 from "../../assets/review1.jpg";
+import review2 from "../../assets/review2.jpg";
+import sliderData from "./sliderData";
+import { BiSolidQuoteAltLeft } from "react-icons/bi";
+import { BiSolidQuoteAltRight } from "react-icons/bi";
 
 const Design = () => {
+  console.log(sliderData);
+
   return (
     <div className="container">
-      <div style={{ marginTop: "50px" }}>
+      <div
+        style={{
+          height: "calc(100vh - 68px)",
+          minHeight: "400px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <div className="slider-grid">
           <div className="slider-arrow-container left">
             <div className="slider-left">
@@ -18,12 +31,24 @@ const Design = () => {
           <div className="main-slider-container">
             <div className="main-slider-grid">
               <div className="grid-img-container">
-                <img src={review1} alt="" />
+                <img src={review2} alt="" />
               </div>
               <div className="main-slider-content">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Cupiditate ut doloribus provident voluptate fugit dolores
-                pariatur in, ad aut temporibus odit.
+                <div className="review-text-container">
+                  <div className="quote-container">
+                    <BiSolidQuoteAltLeft />
+                    <BiSolidQuoteAltRight />
+                  </div>
+                  <p>
+                    The best solution for anyone who wants to work a flexible
+                    banking schedule but still earn a full-time freedom.
+                  </p>
+                </div>
+                <div className="slider-content-footer">
+                  <div>Samira Tanzin</div>
+                  <div>Project Director</div>
+                  <div>Brac Bank</div>
+                </div>
               </div>
             </div>
           </div>
