@@ -102,82 +102,86 @@ const FilesList = () => {
           <span>Upload Another File</span>
         </button>
       </div>
-      <div className="grid-table-row header">
-        {["Index", "File", "Created At", "Data Length", "Actions"]?.map(
-          (singleItem, i) => (
-            <div key={i} className="grid-table-cell">
-              {singleItem}
-            </div>
-          )
-        )}
-      </div>
-      <div style={{ height: "calc(100vh - 200px)", overflowY: "auto" }}>
-        {loading ? (
-          <div
-            style={{
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <ReactLoading
-              type="cylon"
-              color="#5886d9"
-              height={"85px"}
-              width={"100px"}
-            />
+      <div style={{ overflowX: "auto" }}>
+        <div style={{ minWidth: "966px" }}>
+          <div className="grid-table-row header">
+            {["Index", "File", "Created At", "Data Length", "Actions"]?.map(
+              (singleItem, i) => (
+                <div key={i} className="grid-table-cell">
+                  {singleItem}
+                </div>
+              )
+            )}
           </div>
-        ) : (
-          <div>
-            {list?.map((singleItem, i) => (
-              <div key={i} className="grid-table-row body">
-                <div className="grid-table-cell">{singleItem?.id}</div>
-                <div
-                  className="grid-table-cell"
-                  onClick={() => {
-                    dispatch(setCurrData(singleItem?.attendance_info));
-                    dispatch(setCurrView("table"));
-                  }}
-                >
-                  {singleItem?.created_at + "-" + singleItem?.id}.csv
-                </div>
-                <div className="grid-table-cell">
-                  {formatDate(singleItem?.created_at)}
-                </div>
-                <div className="grid-table-cell">
-                  {singleItem?.attendance_info?.length}
-                </div>
-                <div className="grid-table-cell action">
-                  <div
-                    className="action-btn"
-                    onClick={() => {
-                      dispatch(setCurrData(singleItem?.attendance_info));
-                      dispatch(setCurrView("table"));
-                    }}
-                  >
-                    <AiOutlineTable />
-                  </div>
-                  <div
-                    className="action-btn"
-                    onClick={() => {
-                      dispatch(setCurrData(singleItem?.attendance_info));
-                      dispatch(setCurrView("viz"));
-                    }}
-                  >
-                    <AiOutlineBarChart />
-                  </div>
-                  <div
-                    className="action-btn"
-                    onClick={() => handleDestroy(singleItem?.id)}
-                  >
-                    <AiOutlineDelete />
-                  </div>
-                </div>
+          <div style={{ height: "calc(100vh - 200px)", overflowY: "auto" }}>
+            {loading ? (
+              <div
+                style={{
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ReactLoading
+                  type="cylon"
+                  color="#5886d9"
+                  height={"85px"}
+                  width={"100px"}
+                />
               </div>
-            ))}
+            ) : (
+              <div>
+                {list?.map((singleItem, i) => (
+                  <div key={i} className="grid-table-row body">
+                    <div className="grid-table-cell">{singleItem?.id}</div>
+                    <div
+                      className="grid-table-cell"
+                      onClick={() => {
+                        dispatch(setCurrData(singleItem?.attendance_info));
+                        dispatch(setCurrView("table"));
+                      }}
+                    >
+                      {singleItem?.created_at + "-" + singleItem?.id}.csv
+                    </div>
+                    <div className="grid-table-cell">
+                      {formatDate(singleItem?.created_at)}
+                    </div>
+                    <div className="grid-table-cell">
+                      {singleItem?.attendance_info?.length}
+                    </div>
+                    <div className="grid-table-cell action">
+                      <div
+                        className="action-btn"
+                        onClick={() => {
+                          dispatch(setCurrData(singleItem?.attendance_info));
+                          dispatch(setCurrView("table"));
+                        }}
+                      >
+                        <AiOutlineTable />
+                      </div>
+                      <div
+                        className="action-btn"
+                        onClick={() => {
+                          dispatch(setCurrData(singleItem?.attendance_info));
+                          dispatch(setCurrView("viz"));
+                        }}
+                      >
+                        <AiOutlineBarChart />
+                      </div>
+                      <div
+                        className="action-btn"
+                        onClick={() => handleDestroy(singleItem?.id)}
+                      >
+                        <AiOutlineDelete />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
