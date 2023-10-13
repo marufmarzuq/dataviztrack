@@ -1,8 +1,12 @@
-import { AiOutlineCloudUpload, AiOutlineTable } from "react-icons/ai";
+import {
+  AiOutlineCloudUpload,
+  AiOutlinePrinter,
+  AiOutlineTable,
+} from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenAuth } from "../../lib/slices/headerSlice";
 import { setCurrView } from "../../lib/slices/homeSlice";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import PieChartViz from "./PieChartViz";
 import {
   HiDownload,
@@ -11,11 +15,29 @@ import {
 } from "react-icons/hi";
 import BarChartViz from "./BarChartViz";
 import LineGraphViz from "./LineGraphViz";
+import html2canvas from "html2canvas";
+import ReactToPrint from "react-to-print";
 
 const Vizualization = () => {
   const { have_unsave } = useSelector((state) => state?.home);
   const dispatch = useDispatch();
   const [chartIndex, setChartIndex] = useState(1);
+
+  let printableContentRef = useRef();
+
+  const downloadChartAsImage = () => {
+    const chartContainer = document.querySelector(".recharts-wrapper"); // Get the chart's container
+    const image = new Image();
+
+    html2canvas(chartContainer).then((canvas) => {
+      image.src = canvas.toDataURL("image/png");
+
+      const link = document.createElement("a");
+      link.href = image.src;
+      link.download = "chart.png";
+      link.click();
+    });
+  };
 
   return (
     <div>
@@ -76,6 +98,31 @@ const Vizualization = () => {
             gap: "10px",
           }}
         >
+          <ReactToPrint
+            documentTitle="dataviztrack"
+            trigger={() => (
+              <button
+                style={{
+                  height: "35px",
+                  padding: "0 15px",
+                  border: "1px solid #5986d9",
+                  backgroundColor: "#fff",
+                  color: "#5986d9",
+                  fontSize: "14px",
+                  borderRadius: "3px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+                onClick={downloadChartAsImage}
+              >
+                <AiOutlinePrinter fontSize={19} />
+                <span>Print</span>
+              </button>
+            )}
+            content={() => printableContentRef.current}
+          />
           <button
             style={{
               height: "35px",
@@ -90,6 +137,7 @@ const Vizualization = () => {
               alignItems: "center",
               gap: "4px",
             }}
+            onClick={downloadChartAsImage}
           >
             <HiDownload fontSize={19} />
             <span>Download Chart</span>
@@ -143,13 +191,15 @@ const Vizualization = () => {
             <HiOutlineChevronRight />
           </button>
         </div>
-        {chartIndex === 1 ? (
-          <BarChartViz />
-        ) : chartIndex === 2 ? (
-          <PieChartViz />
-        ) : (
-          <LineGraphViz />
-        )}
+        <div ref={printableContentRef}>
+          {chartIndex === 1 ? (
+            <BarChartViz />
+          ) : chartIndex === 2 ? (
+            <PieChartViz />
+          ) : (
+            <LineGraphViz />
+          )}
+        </div>
       </div>
     </div>
   );
