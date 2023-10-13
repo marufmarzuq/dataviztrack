@@ -75,7 +75,7 @@ const Vizualization = () => {
             alignItems: "center",
             gap: "4px",
           }}
-          onClick={() => dispatch(setOpenAuth("fu"))}
+          onClick={() => dispatch(setCurrView("fu"))}
         >
           <AiOutlineCloudUpload fontSize={19} />
           <span>Upload Another File</span>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrData,
   setCurrView,
@@ -8,9 +8,12 @@ import {
 } from "../../lib/slices/homeSlice";
 import Papa from "papaparse";
 import ReactLoading from "react-loading";
+import useApi from "../../hooks/useApi";
 
 const UploadFile = ({ setUnsavedFile }) => {
+  const token = useSelector((state) => state?.auth?.token);
   const dispatch = useDispatch();
+  const { fetchData } = useApi();
   const [loading, setLoading] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -18,22 +21,43 @@ const UploadFile = ({ setUnsavedFile }) => {
     },
   });
 
+  const uploadFile = async (file) => {
+    const data = new FormData();
+    data.append("csv", file);
+    const endpoint = {
+      method: "post",
+      url: "/auth/employee/management/",
+      data: data,
+    };
+    const res = await fetchData(endpoint);
+    if (res?.created_at) {
+      setLoading(false);
+      dispatch(setCurrData(res?.attendance_info));
+      dispatch(setHaveUnsave(false));
+      dispatch(setCurrView("table"));
+    }
+  };
+
   useEffect(() => {
     if (acceptedFiles?.length) {
       setLoading(true);
       const file = acceptedFiles[0];
-      Papa.parse(file, {
-        header: true,
-        complete: (results) => {
-          const data = results?.data;
-          data?.pop();
-          setUnsavedFile(file);
-          dispatch(setHaveUnsave(true));
-          dispatch(setCurrData(data));
-          dispatch(setCurrView("table"));
-          setLoading(false);
-        },
-      });
+      if (token) {
+        uploadFile(file);
+      } else {
+        Papa.parse(file, {
+          header: true,
+          complete: (results) => {
+            const data = results?.data;
+            data?.pop();
+            setUnsavedFile(file);
+            dispatch(setHaveUnsave(true));
+            dispatch(setCurrData(data));
+            dispatch(setCurrView("table"));
+            setLoading(false);
+          },
+        });
+      }
     }
   }, [acceptedFiles]);
 

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenAuth } from "../../lib/slices/headerSlice";
-import { RiLogoutCircleLine } from "react-icons/ri";
+import { RiLogoutCircleRLine } from "react-icons/ri";
 import { logout } from "../../lib/slices/authSlice";
 import { setCurrView } from "../../lib/slices/homeSlice";
 
@@ -29,18 +29,21 @@ const Header = () => {
               style={{
                 border: "none",
                 height: "34px",
-                backgroundColor: "#fff",
                 cursor: "pointer",
+                backgroundColor: "#fff",
                 fontSize: "15px",
                 display: "flex",
                 alignItems: "center",
                 gap: "7px",
                 textTransform: "capitalize",
-                borderBottom: view === "list" ? "1px solid blue" : "none",
+                marginBottom: "-1px",
+                borderBottom:
+                  view === "list" ? "1px solid #5886d9" : "1px solid #fff",
+                pointerEvents: view === "list" ? "none" : "all",
               }}
               onClick={() => dispatch(setCurrView("list"))}
             >
-              Uploaded files
+              All Uploaded files
             </button>
           )}
           {auth?.token ? (
@@ -60,7 +63,7 @@ const Header = () => {
             >
               <span>{auth?.username}</span>
               <span>
-                <RiLogoutCircleLine fontSize={19} color="red" />
+                <RiLogoutCircleRLine fontSize={19} color="red" />
               </span>
             </button>
           ) : (

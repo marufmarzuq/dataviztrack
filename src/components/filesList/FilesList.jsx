@@ -1,27 +1,57 @@
 import { useEffect, useState } from "react";
 import useApi from "../../hooks/useApi";
-import { AiOutlineCloudUpload } from "react-icons/ai";
+import {
+  AiOutlineBarChart,
+  AiOutlineCloudUpload,
+  AiOutlineDelete,
+  AiOutlineTable,
+} from "react-icons/ai";
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import { setCurrData, setCurrView } from "../../lib/slices/homeSlice";
 import { useDispatch } from "react-redux";
 import formatDate from "../../utils/formatDate";
+import UNIVERSAL from "../../config";
+import ReactLoading from "react-loading";
 
 const FilesList = () => {
-  const { fetchData } = useApi();
+  const { fetchData, loading } = useApi();
   const dispatch = useDispatch();
   const [list, setList] = useState([]);
-  console.log(list);
+  const [pagination, setPagination] = useState([]);
+
+  const removeBase = (url) => {
+    return url && url?.startsWith(UNIVERSAL.BASEURL)
+      ? url.slice(UNIVERSAL.BASEURL?.length)
+      : null;
+  };
+
+  const getFiles = async (url) => {
+    const endpoint = {
+      method: "get",
+      url: url || "/auth/employee/management/?limit=10",
+    };
+    const res = await fetchData(endpoint);
+    if (res?.results) {
+      setPagination({
+        next: removeBase(res?.next),
+        previous: removeBase(res?.previous),
+      });
+      setList(res?.results);
+    }
+  };
 
   useEffect(() => {
-    const getFiles = async () => {
-      const endpoint = {
-        method: "get",
-        url: "/auth/employee/management/",
-      };
-      const res = await fetchData(endpoint);
-      if (res?.results) setList(res?.results);
-    };
     getFiles();
   }, []);
+
+  const handleDestroy = async (id) => {
+    setList(list?.filter((sd) => sd?.id !== id));
+    const endpoint = {
+      method: "delete",
+      url: `/auth/employee/management/${id}/`,
+    };
+    await fetchData(endpoint);
+  };
 
   return (
     <div>
@@ -39,7 +69,18 @@ const FilesList = () => {
             gap: "10px",
           }}
         >
-          Left side
+          <button
+            onClick={() => getFiles(pagination?.previous)}
+            className={`pagination-btn ${pagination?.previous ? true : false}`}
+          >
+            <HiOutlineChevronLeft />
+          </button>
+          <button
+            onClick={() => getFiles(pagination?.next)}
+            className={`pagination-btn ${pagination?.next ? true : false}`}
+          >
+            <HiOutlineChevronRight />
+          </button>
         </div>
         <button
           style={{
@@ -62,7 +103,7 @@ const FilesList = () => {
         </button>
       </div>
       <div className="grid-table-row header">
-        {["Index", "File", "Created At", "Data Length"]?.map(
+        {["Index", "File", "Created At", "Data Length", "Actions"]?.map(
           (singleItem, i) => (
             <div key={i} className="grid-table-cell">
               {singleItem}
@@ -70,26 +111,74 @@ const FilesList = () => {
           )
         )}
       </div>
-      {list?.map((singleItem, i) => (
-        <div key={i} className="grid-table-row body">
-          <div className="grid-table-cell">{singleItem?.id}</div>
+      <div style={{ height: "calc(100vh - 200px)", overflowY: "auto" }}>
+        {loading ? (
           <div
-            className="grid-table-cell"
-            onClick={() => {
-              dispatch(setCurrData(singleItem?.attendance_info));
-              dispatch(setCurrView("table"));
+            style={{
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            {singleItem?.created_at + "-" + singleItem?.id}.csv
+            <ReactLoading
+              type="cylon"
+              color="#5886d9"
+              height={"85px"}
+              width={"100px"}
+            />
           </div>
-          <div className="grid-table-cell">
-            {formatDate(singleItem?.created_at)}
+        ) : (
+          <div>
+            {list?.map((singleItem, i) => (
+              <div key={i} className="grid-table-row body">
+                <div className="grid-table-cell">{singleItem?.id}</div>
+                <div
+                  className="grid-table-cell"
+                  onClick={() => {
+                    dispatch(setCurrData(singleItem?.attendance_info));
+                    dispatch(setCurrView("table"));
+                  }}
+                >
+                  {singleItem?.created_at + "-" + singleItem?.id}.csv
+                </div>
+                <div className="grid-table-cell">
+                  {formatDate(singleItem?.created_at)}
+                </div>
+                <div className="grid-table-cell">
+                  {singleItem?.attendance_info?.length}
+                </div>
+                <div className="grid-table-cell action">
+                  <div
+                    className="action-btn"
+                    onClick={() => {
+                      dispatch(setCurrData(singleItem?.attendance_info));
+                      dispatch(setCurrView("table"));
+                    }}
+                  >
+                    <AiOutlineTable />
+                  </div>
+                  <div
+                    className="action-btn"
+                    onClick={() => {
+                      dispatch(setCurrData(singleItem?.attendance_info));
+                      dispatch(setCurrView("viz"));
+                    }}
+                  >
+                    <AiOutlineBarChart />
+                  </div>
+                  <div
+                    className="action-btn"
+                    onClick={() => handleDestroy(singleItem?.id)}
+                  >
+                    <AiOutlineDelete />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="grid-table-cell">
-            {singleItem?.attendance_info?.length}
-          </div>
-        </div>
-      ))}
+        )}
+      </div>
     </div>
   );
 };

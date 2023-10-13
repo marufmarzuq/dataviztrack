@@ -27,7 +27,6 @@ const AuthModal = () => {
   const handleLogin = async () => {
     const { username, password } = formValues;
 
-    console.log({ username, password });
     const endpoint = {
       method: "post",
       url: "/auth/login",
@@ -42,7 +41,6 @@ const AuthModal = () => {
     } else {
       toast.error("Credential not matched!");
     }
-    console.log(res);
   };
 
   const handleRegistration = async () => {
