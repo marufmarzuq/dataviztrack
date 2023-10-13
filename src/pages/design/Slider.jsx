@@ -1,41 +1,36 @@
-const Slider = ({ sliderIndex = 0, img }) => {
+import useSliderData from "../../hooks/useSliderData";
+
+const Slider = ({ sliderIndex = 0 }) => {
+  const data = useSliderData();
+
   return (
-    <div className="testi-slider-container">
+    <div className="review-image-slider-container">
       <div
-        className="testi-boxes"
+        className="review-boxes"
         style={{
           transform: `translateX(${sliderIndex * -100}%)`,
         }}
       >
-        <div className="testi-box">
-          <img src={img} alt="" />
-          <p>
-            Vivamus at molestie dui, eu ornare orci. Curabitur vel egestas
-            dolor. Nulla condimentum nunc sit amet urna tempus finibus. Duis
-            mollis leo id ligula pellentesque, at vehicula dui ultrices.
-          </p>
-          <h4>Sumaiya Nusrat</h4>
-          <h5>Ishwardi Express</h5>
+        <div className="review-box">
+          <img src={data[sliderIndex]?.img} alt="" />
         </div>
-        <div className="testi-box">
-          <img src={img} alt="" />
-          <p>
-            Vivamus at molestie dui, eu ornare orci. Curabitur vel egestas
-            dolor. Nulla condimentum nunc sit amet urna tempus finibus. Duis
-            mollis leo id ligula pellentesque, at vehicula dui ultrices.
-          </p>
-          <h4>Mahmudul</h4>
-          <h5>Pabna Express</h5>
+        <div className="review-box">
+          <img src={data[sliderIndex]?.img} alt="" />
         </div>
-        <div className="testi-box">
-          <img src={img} alt="" />
-          <p>
-            Vivamus at molestie dui, eu ornare orci. Curabitur vel egestas
-            dolor. Nulla condimentum nunc sit amet urna tempus finibus. Duis
-            mollis leo id ligula pellentesque, at vehicula dui ultrices.
-          </p>
-          <h4>Robin Fahad</h4>
-          <h5>Ishwardi Express</h5>
+        <div className="review-box">
+          <img src={data[sliderIndex]?.img} alt="" />
+        </div>
+        <div className="review-box">
+          <img src={data[sliderIndex]?.img} alt="" />
+        </div>
+        <div className="review-box">
+          <img src={data[sliderIndex]?.img} alt="" />
+        </div>
+        <div className="review-box">
+          <img src={data[sliderIndex]?.img} alt="" />
+        </div>
+        <div className="review-box">
+          <img src={data[sliderIndex]?.img} alt="" />
         </div>
       </div>
     </div>
