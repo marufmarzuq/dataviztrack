@@ -1,25 +1,30 @@
-import { useSelector } from "react-redux";
+/* eslint-disable react/jsx-key */
 import {
   CartesianGrid,
+  Customized,
+  Legend,
   Line,
   LineChart,
+  Rectangle,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import useDataFormatter from "../../hooks/useDataFormatter";
 
 const BarChartViz = () => {
-  const curr_data = useSelector((state) => state?.home?.curr_data);
+  const data = useDataFormatter("bar");
+  console.log(data);
 
   return (
-    <div>
-      <div style={{ height: "480px", p: "20px 15px 20px 0" }}>
-        <ResponsiveContainer width="99%" height="100%">
+    <div style={{ paddingRight: "20px" }}>
+      <div style={{ height: "600px" }}>
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart
             width={500}
-            height={300}
-            data={curr_data}
+            height={500}
+            data={data}
             margin={{
               top: 5,
               right: 30,
@@ -29,14 +34,12 @@ const BarChartViz = () => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis />
+            <YAxis domain={[0, 24]} />
             <Tooltip />
-            <Line
-              type="linear"
-              dataKey="amount"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
+            <Legend />
+            <Line type="monotone" dataKey="check_in" stroke="#8884d8" />
+            <Line type="monotone" dataKey="checkout" stroke="#82ca9d" />
+            <Customized component={CustomizedRectangle} />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -45,3 +48,28 @@ const BarChartViz = () => {
 };
 
 export default BarChartViz;
+
+const CustomizedRectangle = (props) => {
+  const { formattedGraphicalItems } = props;
+
+  // get first and second series in the chart
+  const firstSeries = formattedGraphicalItems[0];
+  const secondSeries = formattedGraphicalItems[1];
+
+  // render custom content using points from the graph
+  return firstSeries?.props?.points.map((_, index) => {
+    const firstSeriesPoint = firstSeries?.props?.points[index];
+    const secondSeriesPoint = secondSeries?.props?.points[index];
+    const yDiff = firstSeriesPoint.y - secondSeriesPoint.y;
+
+    return (
+      <Rectangle
+        width={10}
+        height={-yDiff}
+        x={firstSeriesPoint.x - 5}
+        y={firstSeriesPoint.y}
+        fill={yDiff > 0 ? "#5886d9" : yDiff < 0 ? "#5886d9" : "none"}
+      />
+    );
+  });
+};

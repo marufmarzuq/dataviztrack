@@ -13,7 +13,7 @@ import BarChartViz from "./BarChartViz";
 import LineGraphViz from "./LineGraphViz";
 
 const Vizualization = () => {
-  const { curr_data, have_unsave } = useSelector((state) => state?.home);
+  const { have_unsave } = useSelector((state) => state?.home);
   const dispatch = useDispatch();
   const [chartIndex, setChartIndex] = useState(1);
 
@@ -119,7 +119,7 @@ const Vizualization = () => {
         style={{
           height: "calc(100vh - 160px)",
           overflowY: "auto",
-          border: "1px solid #efefef",
+          borderTop: "1px solid #ddd",
         }}
       >
         <div className="chart-header">
@@ -131,10 +131,10 @@ const Vizualization = () => {
           </button>
           <p className="chart-title">
             {chartIndex === 1
-              ? "Bar Chart"
+              ? "Check in and check out time frame"
               : chartIndex === 2
-              ? "Line Chart"
-              : "Employee-wise Total Working Hours"}
+              ? "Employee-wise Total Working Hours"
+              : "Date-wise Total Working Hours"}
           </p>
           <button
             onClick={() => setChartIndex(chartIndex === 3 ? 1 : chartIndex + 1)}
@@ -144,11 +144,11 @@ const Vizualization = () => {
           </button>
         </div>
         {chartIndex === 1 ? (
-          <BarChartViz {...{ curr_data }} />
+          <BarChartViz />
         ) : chartIndex === 2 ? (
-          <LineGraphViz {...{ curr_data }} />
+          <PieChartViz />
         ) : (
-          <PieChartViz {...{ curr_data }} />
+          <LineGraphViz />
         )}
       </div>
     </div>

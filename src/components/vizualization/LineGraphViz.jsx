@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux";
 import {
   CartesianGrid,
+  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -8,18 +8,21 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import useDataFormatter from "../../hooks/useDataFormatter";
 
 const LineGraphViz = () => {
-  const curr_data = useSelector((state) => state?.home?.curr_data);
+  const data = useDataFormatter("line");
+
+  console.log(data);
 
   return (
-    <div>
-      <div style={{ height: "480px", p: "20px 15px 20px 0" }}>
+    <div style={{ paddingRight: "20px" }}>
+      <div style={{ height: "600px", p: "20px 15px 20px 0" }}>
         <ResponsiveContainer width="99%" height="100%">
           <LineChart
             width={500}
-            height={300}
-            data={curr_data}
+            height={500}
+            data={data}
             margin={{
               top: 5,
               right: 30,
@@ -29,14 +32,16 @@ const LineGraphViz = () => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis />
+            <YAxis domain={[0, 24]} />
             <Tooltip />
+            <Legend />
             <Line
-              type="linear"
-              dataKey="amount"
+              type="monotone"
+              dataKey="pv"
               stroke="#8884d8"
               activeDot={{ r: 8 }}
             />
+            <Line type="bump" dataKey="total_working_hour" stroke="#82ca9d" />
           </LineChart>
         </ResponsiveContainer>
       </div>

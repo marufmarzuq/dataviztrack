@@ -2,9 +2,8 @@ import { Pie, PieChart, Sector } from "recharts";
 import useDataFormatter from "../../hooks/useDataFormatter";
 import { useCallback, useState } from "react";
 
-const PieChartViz = ({ curr_data }) => {
-  const data = useDataFormatter("pie", curr_data);
-  console.log({ data });
+const PieChartViz = () => {
+  const data = useDataFormatter("pie");
 
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
