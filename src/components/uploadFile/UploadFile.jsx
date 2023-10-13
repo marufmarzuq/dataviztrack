@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useDispatch } from "react-redux";
-import { setCurrData, setCurrView } from "../../lib/slices/homeSlice";
+import {
+  setCurrData,
+  setCurrView,
+  setHaveUnsave,
+} from "../../lib/slices/homeSlice";
 import Papa from "papaparse";
 import ReactLoading from "react-loading";
 
@@ -24,9 +28,10 @@ const UploadFile = ({ setUnsavedFile }) => {
           const data = results?.data;
           data?.pop();
           setUnsavedFile(file);
+          dispatch(setHaveUnsave(true));
           dispatch(setCurrData(data));
-          setLoading(false);
           dispatch(setCurrView("table"));
+          setLoading(false);
         },
       });
     }

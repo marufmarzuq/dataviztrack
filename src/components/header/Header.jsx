@@ -2,8 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setOpenAuth } from "../../lib/slices/headerSlice";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { logout } from "../../lib/slices/authSlice";
+import { setCurrView } from "../../lib/slices/homeSlice";
 
 const Header = () => {
+  const view = useSelector((state) => state?.home?.curr_view);
   const dispatch = useDispatch();
   const auth = useSelector((state) => state?.auth);
 
@@ -21,7 +23,26 @@ const Header = () => {
         <div style={{ fontSize: "20px", letterSpacing: "1.4px" }}>
           DataVizTrack
         </div>
-        <div>
+        <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
+          {auth?.token && (
+            <button
+              style={{
+                border: "none",
+                height: "34px",
+                backgroundColor: "#fff",
+                cursor: "pointer",
+                fontSize: "15px",
+                display: "flex",
+                alignItems: "center",
+                gap: "7px",
+                textTransform: "capitalize",
+                borderBottom: view === "list" ? "1px solid blue" : "none",
+              }}
+              onClick={() => dispatch(setCurrView("list"))}
+            >
+              Uploaded files
+            </button>
+          )}
           {auth?.token ? (
             <button
               style={{

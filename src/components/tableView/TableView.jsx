@@ -4,7 +4,7 @@ import { setOpenAuth } from "../../lib/slices/headerSlice";
 import { setCurrView } from "../../lib/slices/homeSlice";
 
 const TableView = () => {
-  const currData = useSelector((state) => state?.home?.curr_data);
+  const { curr_data, have_unsave } = useSelector((state) => state?.home);
   const dispatch = useDispatch();
 
   return (
@@ -42,21 +42,23 @@ const TableView = () => {
             <AiOutlineBarChart fontSize={19} />
             <span>Visualize</span>
           </button>
-          <button
-            style={{
-              height: "35px",
-              padding: "0 15px",
-              border: "1px solid #5986d9",
-              backgroundColor: "#fff",
-              color: "#5986d9",
-              fontSize: "14px",
-              borderRadius: "3px",
-              cursor: "pointer",
-            }}
-            onClick={() => dispatch(setOpenAuth(true))}
-          >
-            Save Data
-          </button>
+          {have_unsave && (
+            <button
+              style={{
+                height: "35px",
+                padding: "0 15px",
+                border: "1px solid #5986d9",
+                backgroundColor: "#fff",
+                color: "#5986d9",
+                fontSize: "14px",
+                borderRadius: "3px",
+                cursor: "pointer",
+              }}
+              onClick={() => dispatch(setOpenAuth(true))}
+            >
+              Save Data
+            </button>
+          )}
         </div>
         <button
           style={{
@@ -94,7 +96,7 @@ const TableView = () => {
               <td>Check In</td>
               <td>Check Out</td>
             </tr>
-            {currData?.map((row, i) => (
+            {curr_data?.map((row, i) => (
               <tr key={i}>
                 <td>{row["Employee ID"]}</td>
                 <td>{row["Employee Name"]}</td>

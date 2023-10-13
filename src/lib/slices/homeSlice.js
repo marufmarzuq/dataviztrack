@@ -5,6 +5,7 @@ import { CREDENTIALS } from "../../utils/dataKeys";
 const localData = loadFromLocalStorage(CREDENTIALS) || {};
 
 const initialState = {
+  have_unsave: false,
   curr_view: localData?.token ? "list" : "fu",
   curr_data: {},
 };
@@ -13,6 +14,9 @@ const homeSlice = createSlice({
   name: "home",
   initialState,
   reducers: {
+    setHaveUnsave: (state, action) => {
+      state.have_unsave = action.payload;
+    },
     setCurrView: (state, action) => {
       state.curr_view = action.payload;
     },
@@ -22,5 +26,5 @@ const homeSlice = createSlice({
   },
 });
 
-export const { setCurrView, setCurrData } = homeSlice.actions;
+export const { setHaveUnsave, setCurrView, setCurrData } = homeSlice.actions;
 export default homeSlice.reducer;

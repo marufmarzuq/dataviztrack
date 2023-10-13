@@ -4,9 +4,9 @@ import { setOpenAuth } from "../../lib/slices/headerSlice";
 import { setCurrView } from "../../lib/slices/homeSlice";
 
 const Vizualization = () => {
-  const currData = useSelector((state) => state?.home?.curr_data);
+  const { curr_data, have_unsave } = useSelector((state) => state?.home);
   const dispatch = useDispatch();
-  console.log(currData);
+  console.log(curr_data);
 
   return (
     <div>
@@ -43,21 +43,23 @@ const Vizualization = () => {
             <AiOutlineTable fontSize={19} />
             <span>View In Table</span>
           </button>
-          <button
-            style={{
-              height: "35px",
-              padding: "0 15px",
-              border: "1px solid #5986d9",
-              backgroundColor: "#fff",
-              color: "#5986d9",
-              fontSize: "14px",
-              borderRadius: "3px",
-              cursor: "pointer",
-            }}
-            onClick={() => dispatch(setOpenAuth(true))}
-          >
-            Save Data
-          </button>
+          {have_unsave && (
+            <button
+              style={{
+                height: "35px",
+                padding: "0 15px",
+                border: "1px solid #5986d9",
+                backgroundColor: "#fff",
+                color: "#5986d9",
+                fontSize: "14px",
+                borderRadius: "3px",
+                cursor: "pointer",
+              }}
+              onClick={() => dispatch(setOpenAuth(true))}
+            >
+              Save Data
+            </button>
+          )}
         </div>
         <button
           style={{
