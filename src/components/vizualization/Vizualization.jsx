@@ -17,11 +17,13 @@ import BarChartViz from "./BarChartViz";
 import LineGraphViz from "./LineGraphViz";
 import html2canvas from "html2canvas";
 import ReactToPrint from "react-to-print";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const Vizualization = () => {
   const { have_unsave } = useSelector((state) => state?.home);
   const dispatch = useDispatch();
   const [chartIndex, setChartIndex] = useState(1);
+  const { width } = useWindowSize();
 
   let printableContentRef = useRef();
 
@@ -72,7 +74,7 @@ const Vizualization = () => {
             onClick={() => dispatch(setCurrView("table"))}
           >
             <AiOutlineTable fontSize={19} />
-            <span>View In Table</span>
+            <span>{width > 700 ? "View In Table" : "Table"}</span>
           </button>
           {have_unsave && (
             <button
@@ -118,7 +120,7 @@ const Vizualization = () => {
                 onClick={downloadChartAsImage}
               >
                 <AiOutlinePrinter fontSize={19} />
-                <span>Print</span>
+                {width > 700 ? <span>Print</span> : ""}
               </button>
             )}
             content={() => printableContentRef.current}
@@ -140,7 +142,7 @@ const Vizualization = () => {
             onClick={downloadChartAsImage}
           >
             <HiDownload fontSize={19} />
-            <span>Download Chart</span>
+            {width > 700 ? <span>Download Chart</span> : ""}
           </button>
           <button
             style={{
@@ -159,46 +161,54 @@ const Vizualization = () => {
             onClick={() => dispatch(setCurrView("fu"))}
           >
             <AiOutlineCloudUpload fontSize={19} />
-            <span>Upload Another File</span>
+            {width > 700 ? <span>Upload Another File</span> : ""}
           </button>
         </div>
       </div>
-      <div
-        style={{
-          height: "calc(100vh - 160px)",
-          overflowY: "auto",
-          borderTop: "1px solid #ddd",
-        }}
-      >
-        <div className="chart-header">
-          <button
-            onClick={() => setChartIndex(chartIndex === 1 ? 3 : chartIndex - 1)}
-            className="chart-header-btn"
+      <div style={{ overflowX: "auto" }}>
+        <div style={{ minWidth: "600px" }}>
+          <div
+            style={{
+              height: "calc(100vh - 160px)",
+              overflowY: "auto",
+              borderTop: "1px solid #ddd",
+            }}
           >
-            <HiOutlineChevronLeft />
-          </button>
-          <p className="chart-title">
-            {chartIndex === 1
-              ? "Check in and check out time frame"
-              : chartIndex === 2
-              ? "Employee-wise Total Working Hours"
-              : "Date-wise Total Working Hours"}
-          </p>
-          <button
-            onClick={() => setChartIndex(chartIndex === 3 ? 1 : chartIndex + 1)}
-            className="chart-header-btn"
-          >
-            <HiOutlineChevronRight />
-          </button>
-        </div>
-        <div ref={printableContentRef}>
-          {chartIndex === 1 ? (
-            <BarChartViz />
-          ) : chartIndex === 2 ? (
-            <PieChartViz />
-          ) : (
-            <LineGraphViz />
-          )}
+            <div className="chart-header">
+              <button
+                onClick={() =>
+                  setChartIndex(chartIndex === 1 ? 3 : chartIndex - 1)
+                }
+                className="chart-header-btn"
+              >
+                <HiOutlineChevronLeft />
+              </button>
+              <p className="chart-title">
+                {chartIndex === 1
+                  ? "Check in and check out time frame"
+                  : chartIndex === 2
+                  ? "Employee-wise Total Working Hours"
+                  : "Date-wise Total Working Hours"}
+              </p>
+              <button
+                onClick={() =>
+                  setChartIndex(chartIndex === 3 ? 1 : chartIndex + 1)
+                }
+                className="chart-header-btn"
+              >
+                <HiOutlineChevronRight />
+              </button>
+            </div>
+            <div ref={printableContentRef}>
+              {chartIndex === 1 ? (
+                <BarChartViz />
+              ) : chartIndex === 2 ? (
+                <PieChartViz />
+              ) : (
+                <LineGraphViz />
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
