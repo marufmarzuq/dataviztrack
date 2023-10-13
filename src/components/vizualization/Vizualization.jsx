@@ -2,8 +2,7 @@ import { AiOutlineCloudUpload, AiOutlineTable } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenAuth } from "../../lib/slices/headerSlice";
 import { setCurrView } from "../../lib/slices/homeSlice";
-import { useEffect, useState } from "react";
-import getEmployeeWiseWorkingHours from "./employeeWiseWorkingHours";
+import { useState } from "react";
 import PieChartViz from "./PieChartViz";
 import {
   HiDownload,
@@ -17,12 +16,6 @@ const Vizualization = () => {
   const { curr_data, have_unsave } = useSelector((state) => state?.home);
   const dispatch = useDispatch();
   const [chartIndex, setChartIndex] = useState(1);
-
-  useEffect(() => {
-    console.log(getEmployeeWiseWorkingHours(curr_data));
-  }, []);
-
-  console.log(chartIndex);
 
   return (
     <div>
@@ -151,11 +144,11 @@ const Vizualization = () => {
           </button>
         </div>
         {chartIndex === 1 ? (
-          <BarChartViz />
+          <BarChartViz {...{ curr_data }} />
         ) : chartIndex === 2 ? (
-          <LineGraphViz />
+          <LineGraphViz {...{ curr_data }} />
         ) : (
-          <PieChartViz />
+          <PieChartViz {...{ curr_data }} />
         )}
       </div>
     </div>
