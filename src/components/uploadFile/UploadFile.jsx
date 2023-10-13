@@ -66,7 +66,7 @@ const UploadFile = ({ setUnsavedFile }) => {
       style={{
         display: "flex",
         alignItems: "center",
-        height: "calc(100vh - 65px)",
+        height: "calc(100vh - 66px)",
       }}
     >
       <div

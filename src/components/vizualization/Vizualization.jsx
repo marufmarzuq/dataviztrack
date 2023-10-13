@@ -2,11 +2,27 @@ import { AiOutlineCloudUpload, AiOutlineTable } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenAuth } from "../../lib/slices/headerSlice";
 import { setCurrView } from "../../lib/slices/homeSlice";
+import { useEffect, useState } from "react";
+import getEmployeeWiseWorkingHours from "./employeeWiseWorkingHours";
+import PieChartViz from "./PieChartViz";
+import {
+  HiDownload,
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
+} from "react-icons/hi";
+import BarChartViz from "./BarChartViz";
+import LineGraphViz from "./LineGraphViz";
 
 const Vizualization = () => {
   const { curr_data, have_unsave } = useSelector((state) => state?.home);
   const dispatch = useDispatch();
-  console.log(curr_data);
+  const [chartIndex, setChartIndex] = useState(1);
+
+  useEffect(() => {
+    console.log(getEmployeeWiseWorkingHours(curr_data));
+  }, []);
+
+  console.log(chartIndex);
 
   return (
     <div>
@@ -61,33 +77,86 @@ const Vizualization = () => {
             </button>
           )}
         </div>
-        <button
+        <div
           style={{
-            height: "35px",
-            padding: "0 15px",
-            border: "1px solid #5986d9",
-            backgroundColor: "#fff",
-            color: "#5986d9",
-            fontSize: "14px",
-            borderRadius: "3px",
-            cursor: "pointer",
             display: "flex",
-            alignItems: "center",
-            gap: "4px",
+            gap: "10px",
           }}
-          onClick={() => dispatch(setCurrView("fu"))}
         >
-          <AiOutlineCloudUpload fontSize={19} />
-          <span>Upload Another File</span>
-        </button>
+          <button
+            style={{
+              height: "35px",
+              padding: "0 15px",
+              border: "1px solid #5986d9",
+              backgroundColor: "#fff",
+              color: "#5986d9",
+              fontSize: "14px",
+              borderRadius: "3px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
+          >
+            <HiDownload fontSize={19} />
+            <span>Download Chart</span>
+          </button>
+          <button
+            style={{
+              height: "35px",
+              padding: "0 15px",
+              border: "1px solid #5986d9",
+              backgroundColor: "#fff",
+              color: "#5986d9",
+              fontSize: "14px",
+              borderRadius: "3px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
+            onClick={() => dispatch(setCurrView("fu"))}
+          >
+            <AiOutlineCloudUpload fontSize={19} />
+            <span>Upload Another File</span>
+          </button>
+        </div>
       </div>
       <div
         style={{
           height: "calc(100vh - 160px)",
           overflowY: "auto",
+          border: "1px solid #efefef",
         }}
       >
-        Chart will come here
+        <div className="chart-header">
+          <button
+            onClick={() => setChartIndex(chartIndex === 1 ? 3 : chartIndex - 1)}
+            className="chart-header-btn"
+          >
+            <HiOutlineChevronLeft />
+          </button>
+          <p className="chart-title">
+            {chartIndex === 1
+              ? "Bar Chart"
+              : chartIndex === 2
+              ? "Line Chart"
+              : "Employee-wise Total Working Hours"}
+          </p>
+          <button
+            onClick={() => setChartIndex(chartIndex === 3 ? 1 : chartIndex + 1)}
+            className="chart-header-btn"
+          >
+            <HiOutlineChevronRight />
+          </button>
+        </div>
+        {chartIndex === 1 ? (
+          <BarChartViz />
+        ) : chartIndex === 2 ? (
+          <LineGraphViz />
+        ) : (
+          <PieChartViz />
+        )}
       </div>
     </div>
   );

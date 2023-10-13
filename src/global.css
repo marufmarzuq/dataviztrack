@@ -133,6 +133,8 @@ button.pagination-btn {
   border: none;
   cursor: pointer;
   transition: 0.3s;
+  font-size: 20px;
+  background-color: #fff;
 }
 button.pagination-btn.false {
   pointer-events: none;
@@ -140,5 +142,32 @@ button.pagination-btn.false {
   color: #7b7b7b;
 }
 button.pagination-btn:hover {
+  background-color: #efefef;
+}
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px 25px;
+}
+.chart-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+button.chart-header-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  width: 35px;
+  border-radius: 100%;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 20px;
+  background-color: #fff;
+}
+button.chart-header-btn:hover {
   background-color: #efefef;
 }

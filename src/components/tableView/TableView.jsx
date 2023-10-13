@@ -89,8 +89,8 @@ const TableView = () => {
         <table>
           <tbody>
             <tr>
-              <td>Employ ID</td>
-              <td>Employ Name</td>
+              <td>Employee ID</td>
+              <td>Employee Name</td>
               <td>Designation</td>
               <td>Date</td>
               <td>Check In</td>
