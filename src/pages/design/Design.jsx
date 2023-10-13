@@ -22,7 +22,7 @@ const Design = () => {
       >
         <div className="slider-grid">
           <div className="slider-arrow-container left">
-            <Slider sliderIndex={sliderIndex - 1} />
+            <Slider sliderIndex={sliderIndex - 1} isNav />
             <div
               className="slider-nav-overlay"
               style={{
@@ -56,7 +56,7 @@ const Design = () => {
             </div>
           </div>
           <div className="slider-arrow-container right">
-            <Slider sliderIndex={sliderIndex + 1} />
+            <Slider sliderIndex={sliderIndex + 1} isNav />
             <div
               className="slider-nav-overlay"
               style={{
