@@ -1,13 +1,14 @@
 import "./design.css";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import review1 from "../../assets/review1.jpg";
-import review2 from "../../assets/review2.jpg";
-import sliderData from "./sliderData";
 import { BiSolidQuoteAltLeft } from "react-icons/bi";
 import { BiSolidQuoteAltRight } from "react-icons/bi";
+import Slider from "./Slider";
+import { useState } from "react";
+import useSliderData from "../../hooks/useSliderData";
 
 const Design = () => {
-  console.log(sliderData);
+  const [sliderIndex, setSliderIndex] = useState(1);
+  const data = useSliderData();
 
   return (
     <div className="container">
@@ -21,42 +22,51 @@ const Design = () => {
       >
         <div className="slider-grid">
           <div className="slider-arrow-container left">
-            <div className="slider-left">
-              <img src={review1} alt="" />
-            </div>
-            <div className="slider-nav-overlay">
+            <Slider sliderIndex={sliderIndex - 1} />
+            <div
+              className="slider-nav-overlay"
+              style={{
+                pointerEvents: sliderIndex > 1 ? "all" : "none",
+                color: sliderIndex > 1 ? "#fff" : "#ffffff47",
+              }}
+              onClick={() =>
+                setSliderIndex(sliderIndex > 1 ? sliderIndex - 1 : 0)
+              }
+            >
               <FiChevronLeft />
             </div>
           </div>
           <div className="main-slider-container">
             <div className="main-slider-grid">
-              <div className="grid-img-container">
-                <img src={review2} alt="" />
-              </div>
+              <Slider sliderIndex={sliderIndex} />
               <div className="main-slider-content">
                 <div className="review-text-container">
                   <div className="quote-container">
                     <BiSolidQuoteAltLeft />
                     <BiSolidQuoteAltRight />
                   </div>
-                  <p>
-                    The best solution for anyone who wants to work a flexible
-                    banking schedule but still earn a full-time freedom.
-                  </p>
+                  <p>{data[sliderIndex]?.review}</p>
                 </div>
                 <div className="slider-content-footer">
-                  <div>Samira Tanzin</div>
-                  <div>Project Director</div>
-                  <div>Brac Bank</div>
+                  <div>{data[sliderIndex]?.name}</div>
+                  <div>{data[sliderIndex]?.designation}</div>
+                  <div>{data[sliderIndex]?.company}</div>
                 </div>
               </div>
             </div>
           </div>
           <div className="slider-arrow-container right">
-            <div className="slider-left">
-              <img src={review1} alt="" />
-            </div>
-            <div className="slider-nav-overlay">
+            <Slider sliderIndex={sliderIndex + 1} />
+            <div
+              className="slider-nav-overlay"
+              style={{
+                pointerEvents: sliderIndex < 5 ? "all" : "none",
+                color: sliderIndex < 5 ? "#fff" : "#ffffff47",
+              }}
+              onClick={() =>
+                setSliderIndex(sliderIndex < 5 ? sliderIndex + 1 : 0)
+              }
+            >
               <FiChevronRight />
             </div>
           </div>

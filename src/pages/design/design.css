@@ -126,49 +126,22 @@
 
 /* Slider CSS ##################################*/
 
-.testi-slider-container {
+.review-image-slider-container {
   overflow: hidden;
+  height: 100%;
 }
-.testi-boxes {
+.review-boxes {
   display: grid;
-  grid-template-columns: repeat(3, 100%);
-  padding-top: 20px;
+  grid-template-columns: repeat(7, 100%);
   transition: 0.5s;
+  height: 100%;
 }
-.tesi-double-box-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-.testi-box {
-  border: 2px solid #444;
-  border-radius: 15px;
-  position: relative;
-  padding: 70px 25px 25px;
+.review-box {
   width: 100%;
-  max-width: 500px;
-  margin: 45px auto 0;
+  height: 100%;
 }
-
-.testi-box img {
-  height: 90px;
-  width: 90px;
-  border-radius: 100%;
-  transform: translateX(-50%);
-  left: 50%;
-  top: -45px;
-  display: block;
-  position: absolute;
-}
-
-.testi-box p {
-  font-style: oblique;
-}
-
-.testi-box h4 {
-  padding: 20px 0 0px;
-}
-
-.testi-box h5 {
-  font-weight: 200;
+.review-box img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
